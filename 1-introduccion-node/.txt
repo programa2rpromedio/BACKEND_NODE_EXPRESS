@@ -1,0 +1,91 @@
+Introducción a Node 
+Crear una aplicación en Node que registre y lea información
+en formato JSON
+
+
+Objetivos
+  Ejecutar scripts con Node Js desde la terminal
+  Crear archivos con el módulo File System
+  Leer archivos con el módulo File System
+  Importar y exportar módulos en Node Js
+
+https://blog.hubspot.es/website/que-es-servidor-web
+Descarga Node: https://nodejs.org/en
+
+Introducción
+
+🟢 ¿Que es Node? 
+    Node, es un entorno de ejecución para crear aplicaciones en el lado del servidor.
+    Con Node podemos ejecutar JavaScript en el lado del servidor, esto quiere decir que nuestros scripts
+    podrán interactuar con el sistema operativo en el que se ejecuten y realizar modificaciones a archivos,
+    acceder a las variables de entorno e incluso ejecutar líneas de comando.
+
+    Que podemos hacer?
+    ●Crear servidores: De forma nativa con el módulo “http” o con frameworks como
+    “Express.js”.
+    ● Crear y consumir APIs REST: Para consumirlas podríamos usar “AXIOS” al igual que
+    en el lado del cliente y para crearlas de forma nativa o con Express.js.
+    ● Conexiones con bases de datos: Con módulos como “mongoose” o “pg” podremos
+    conectarnos con motores como MongoDB o PostgreSQL, y en sí con diferentes
+    bases de datos tanto relacionales como no relacionales.
+    ● Aplicaciones multiplataformas: Con integraciones de diferentes SDK`s, librerías y
+    frameworks, podremos exportar aplicaciones híbridas de teléfonos y de escritorio
+    creadas con tecnologías web.
+    ● Chats: Generando persistencia de datos para los mensajes, podríamos crear un chat
+    en tiempo real con el uso de sockets entre diferentes usuarios con la tecnología
+    “socket.io”.
+    ● Conexiones con electrónica: Con módulos como “serialport” se pueden hacer
+    conexiones con sistemas arduinos.
+    ● Gestión de archivos: Podemos hacer un CRUD con archivos del sistema operativo
+    con el módulo “File System”.
+    ● Testing de aplicaciones: Al igual que en el lado del frontend, podríamos hacer testing
+    en el lado del backend con las conocidas librerías “mocha” y “jest”.
+    ● Envíos de correos electrónicos: Conectados a diferentes proveedores de correos
+    electrónicos y con la ayuda de una interesante variedad de paquetes en NPM,
+    podemos enviar correos electrónicos desde Node.
+
+🟢 Node y npm
+  Al instalar Node Js estamos también instalando su gestor de paquetes por defecto llamado
+  NPM, con el que podremos instalar nuevas funcionalidades o módulos, además de manejar
+  las dependencias del proyecto sin necesidad de una herramienta externa.
+  🟡
+  🟡
+
+🟢 Creación de archivos
+  Con Node podemos leer, crear, eliminar y realizar varias otras operaciones relacionadas con
+  el sistema de archivos de nuestro computador a través de un módulo llamado File System
+  que se abrevia como “fs”.
+  fs.writeFileSync('tareas.txt', tareas)
+  🟡
+  🟡
+
+🟢 Lectura de archivos
+  Así como podemos crear archivos con el método writeFileSync, también podemos leerlos
+  con el método readFileSync.
+  Este método tiene la siguiente anatomía:
+  fs.readFileSync( <nombre del archivo>, <codificación del contenido> )
+  🟡
+  🟡
+
+🟢 Lectura y manipulación de archivos JSON
+  JSON o JavaScript object notation es un formato que se guarda como texto plano, al leer
+  uno de estos archivos desde JavaScript o desde cualquier otro lenguaje traeremos el dato
+  como un string el cual posteriormente transformaremos.
+  Antes de aprender a transformarlo veamos que sucede si no lo hacemos.
+  
+  tareas.forEach( (tarea) => {
+  console.log(tarea)
+  })
+
+  Lo cual sucede porque tareas es un String y este tipo de dato no cuenta con el método
+  forEach como los arreglos.
+
+🟢 Importación y exportación de módulos
+  En la medida que vayamos desarrollando nuestras aplicaciones con Node Js nuestro
+  index.js va a crecer en líneas de código y empezará a ser cada vez más incómodo leerlo y
+  ubicar la lógica que vamos agregando
+  Para que esto no sea un problema existe una buena e importante práctica que consiste en
+  dividir la lógica de la aplicación en diferentes archivos, en donde cada uno podrá exportar e
+  importar la lógica del otro.
+  🟡
+  🟡
