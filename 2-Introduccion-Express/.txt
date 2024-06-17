@@ -1,0 +1,206 @@
+Introducción a Express Js
+
+🟠 [OBJETIVO] Levantar un servidor con Express Js que ofrezca una API REST
+para leer y agregar datos en un archivo JSON local
+
+ 🟠Crear desde el backend una ruta GET usando Express Js 
+ 🟠Crear desde el backend una ruta GET para listar un conjunto de
+  recursos en Express Js 
+ 🟠Crear una ruta POST en un backend para agregar datos en un
+  JSON local  
+
+
+🟢-Introducción
+  ¿Qué son los servidores Web?
+  Un servidor web es una aplicación backend creada
+  para recibir solicitudes de aplicaciones clientes y
+  devolver información o inclusive sitios web.
+  Usualmente, desde el servidor utilizaremos bases de
+  datos para la persistencia de datos, lo cual
+  aprenderemos más adelante.
+
+🟢-Servidor web con el modulo http
+  Servidor HTTP con Node.js https://medium.com/@diego.coder/servidor-http-con-node-js-3e594f3f2733
+
+
+🟢-Introducción a express. ¿Qué es express?
+  Express Js es un framework de JavaScript para la creación de servidores y API REST en un entorno
+  Node Js.
+  Es utilizado por varias de las empresas más grandes del mundo como PayPal, Uber, Netflix, LinkedIn,
+  IBM y muy probablemente también se esté usando en tu aplicación favorita.
+  Los desarrolladores que prefieren Express Js como herramienta de trabajo típicamente lo ocupan por
+  ser significativamente minimalista, con una sintaxis intuitiva y declarativa, además del poco tiempo de
+  desarrollo y líneas de código que se necesita para empezar servidores y servicios web
+
+  🟡Instalación de Express Js
+    Para empezar a utilizar Express js primero hay que instalarlo por npm, para esto crea una nueva
+    carpeta, dentro de la carpeta ejecuta la siguiente línea de comando para iniciar un proyecto NPM:
+    Ahora instalemos Express con la siguiente línea de comando:
+    npm init -y Asegúrate que el nombre de la carpeta no incluya mayúsculas
+    npm install express
+    Luego de instalarse deberás ver
+    “express” en el archivo package.json
+
+  🟡 Creación de rutas
+    Creemos nuestro primer proyecto titulado Hola mundo en donde creemos un servidor para devolver un
+    string que diga “Hello World Express Js” en una ruta GET /home
+    Para esto crea un archivo index.js y escribe en él el siguiente código:
+    const express = require('express')
+    const app = express()
+    app.listen(3000, console.log("¡Servidor encendido!"))
+    app.get("/home", (req, res) => {
+    res.send("Hello World Express Js")
+    })
+
+  🟡 Levantando mi servidor
+    Lo siguiente será ejecutar el archivo
+    index.js por la terminal para levantar
+    el servidor
+    node index.js
+    Ahora que nuestro servidor está levantado, solo
+    deberás abrir el navegador y escribir la siguiente
+    URL:
+    http://localhost:3000/home
+
+  🟡 Con la instancia app podremos crear todas las rutas que necesitemos. Solo debemos cumplir la siguiente
+      sintaxis:
+      En donde:
+      ● app: Es una instancia de Express.
+      ● method: Es un método de solicitud HTTP en minúscula.
+      ● path: Es la ruta que será consultada por la aplicación cliente, por ejemplo /home
+      ● callback: Es la función que se ejecutará cuando la ruta sea consultada.
+
+🟢-Arquitectura Cliente - Servidor
+  La creación de servidores consiste en permitir la comunicación entre 2 aplicaciones que requieren
+  compartir información o la posibilidad de ejecutar funciones a partir de consultas HTTP.
+  Esto mismo se conoce como la arquitectura Cliente - Servidor
+  En donde tenemos un cliente que
+  realiza una consulta y un servidor
+  que procesa la consulta y emite
+  una respuesta.
+
+  🟡 El objeto request(req) y response(res)
+      Los servidores disponibilizan datos y funciones a través de rutas y en cada una de ellas tenemos acceso a 2
+      parámetros conocidos como el request y el response.
+      En donde el request corresponde a la información de la consulta recibida en el servidor, mientras que el
+      response será la respuesta que le daremos a las aplicaciones clientes
+
+      En Express el request y el response son objetos que podemos utilizar para obtener el detalle de la consulta y
+      poder dar respuesta:
+      Existen varios atributos y métodos en cada objeto, pero para esta clase solo ocuparemos los siguientes:
+
+      Request:
+      ● req.body: Devuelve el payload o cuerpo de la consulta
+      Response:
+      ● res.send(): Devuelve como respuesta de la consulta lo que sea asignado como argumento
+      ● res.json(): Devuelve en formato JSON lo que sea asignado como argumento 
+
+🟢Devolviendo un JSON en una ruta
+    Frecuentemente, crearemos una API REST para entregar información a partir de una consulta bajo el
+    método GET
+
+🟢Recibiendo un payload
+  Hasta ahora solo hemos devuelto información a
+  un cliente que consulta una de nuestras rutas:
+  Sin embargo, en muchas ocasiones
+  necesitaremos recibir datos de parte del cliente
+
+  El payload se entiende como la “carga” dentro de
+  una consulta. En express esta carga se encuentra en
+  el atributo body del objeto request
+  Al recibir datos de parte del cliente podemos
+  utilizarlos para por ejemplo registrar un nuevo
+  producto en nuestra base de datos (por ahora solo
+  un json local).
+  Request: {
+  body: {
+  "id": 3,
+  "nombre": "Monitor",
+  "precio": 59990
+  }
+  }
+
+  Para poder leer el payload es necesario realizar una pequeña configuración en nuestra instancia app. Esta
+  configuración consiste en ejecutar una función antes de cada ruta para parsear el contenido enviado desde el
+  cliente. Para entender bien lo que vamos a hacer tenemos que conocer el concepto de middleware.
+
+  🟡¿Qué son los middlewares?
+    Un middleware, particularmente un HTTP
+    middleware, es una capa intermedia que envuelve la
+    aplicación con la finalidad de procesar el request y
+    el response.
+    Los middleware pueden ser usados para procesar
+    fácilmente los payloads, añadir headers, comprimir
+    los response, manejar autenticación
+
+    El siguiente diagrama nos ayudará a entender cómo funciona
+    Consulta a endpoint =>  Se ejecuta el middleware => Se ejecuta la función callback de la ruta
+
+    En Express Js los middlewares se declaran con el método .use() de express, pasando como argumento el
+    middleware.
+    Para eso agregamos la siguiente línea en nuestro servidor
+    app.use(express.json())
+
+  🟡Creación de una ruta POST
+     Ahora creemos una ruta POST que sea utilizada para agregar un nuevo producto en nuestro JSON local. 
+
+🟢Eliminando un recurso
+    Ahora que ya sabemos listar recursos y agregar nuevos, procedamos a implementar la
+    funcionalidad de borrado utilizando una ruta DELETE /productos/:id
+    En esta ruta será necesario que el cliente nos especifique el id del producto a eliminar, para
+    esto ocuparemos los parámetros de la URL con el req.params.
+
+    El req.params nos retorna un objeto con todos los parámetros de la URL, cada parámetro se
+    identificará por los 2 puntos(:) antes del nombre del parámetro.
+    Para eliminar el producto del arreglo ocupamos el método splice de los arreglos,
+    posteriormente sobreescribimos el archivo productos.json. Cuando trabajemos con bases
+    de datos haremos esto mismo de forma más eficiente.
+
+🟢Modificando un recurso
+  Para permitirle a una aplicación cliente modificar alguno de los productos que tenemos
+  almacenados en el JSON crearemos una ruta PUT /productos/:id
+  Esta ruta tiene la particularidad de recibir el id del producto a modificar como parámetro en
+  la ruta, además esperará recibir como payload el objeto del producto modificado para
+  sustituirlo en el JSON.
+
+🟢Devolviendo un HTML desde el servidor
+  Es posible devolver archivos desde Express a través de una ruta GET utilizando el método
+  sendFile() del objeto response
+  🟡 app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html")
+  })
+  El método sendFile() recibe como argumento la ruta absoluta de un archivo, por este motivo
+  ocupamos un objeto global llamado __dirname que nos devuelve la dirección del script en el
+  que se ejecuta, en este caso equivale a la dirección de la carpeta del proyecto en nuestro
+  computador.
+
+  Al devolver una aplicación cliente desde el mismo backend en donde tenemos el servidor y
+  la API REST se le conoce como desarrollo de aplicaciones monolíticas, sin embargo, a
+  continuación veremos que es posible separar completamente cada uno de estos elementos
+  y de igual manera poder comunicarse entre sí.
+
+  🟡 Consultando ruta GET /productos desde otro servido
+    Si abrimos la pestaña network de nuestro navegador y recargamos la página, veremos que al
+    intentar consultar la ruta GET http://localhost:3000/productos recibimos un error de CORS.
+
+🟢CORS
+  Los CORS, por sus siglas en inglés Cross Origin Request Sharing o “Intercambio de Recursos
+  de Origen Cruzado” son una política que permite la comunicación de 2 aplicaciones de
+  orígenes o dominios diferentes.
+
+  Los servidores que creamos con Express Js bloquean las consultas de aplicaciones
+  externas gracias a que los CORS están deshabilitados por defecto, no obstante podemos
+  habilitarlos instalando un paquete de NPM llamado cors.
+
+  npm install cors
+  Y posteriormente escribiendo estas 2 líneas en nuestro servidor:
+  const express = require('express')
+  const app = express()
+  const fs = require('fs')
+  const cors = require('cors')
+  app.listen(3000, console.log("¡Servidor encendido!"))
+  app.use(cors())
+  app.use(express.json())
+ 
+
+🟢🟡🔴

@@ -1,0 +1,23 @@
+GET http://localhost:3000/productos 
+
+###
+POST http://localhost:3000/productos 
+Content-Type: application/json
+
+{ 
+  "id": "4",
+  "nombre": "Mouse",
+  "precio": 600
+}
+
+###
+DELETE  http://localhost:3000/productos/1 
+
+###
+PUT http://localhost:3000/productos/3
+Content-Type: application/json 
+
+{
+ 
+  "precio": 500
+}
