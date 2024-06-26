@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Stock</title>
+  <style>
+    * {
+      color-scheme: dark;
+    }
+
+    #productos {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Gestor de stock</h1>
+
+  <h2>Productos</h2>
+  <section id="productos">
+
+  </section>
+
+  <h2>Cargar Producto</h2>
+  <form id="formulario">
+    <label for="nombre">Nombre</label>
+    <input type="text" name="nombre" id="nombre">
+    <label for="precio">Precio</label>
+    <input type="number" name="precio" id="precio">
+    <label for="stock">Stock</label>
+    <input type="number" name="stock" id="stock">
+    <button type="submit">Enviar</button>
+  </form>
+
+</body>
+
+<script>
+  const getData = async () => {
+    const response = await fetch('http://localhost:3000/productos')
+    const productos = await response.json()
+    document.getElementById('productos').innerHTML = ''
+    console.log(productos);
+    productos.data.map((producto) => {
+      const div = document.createElement('div')
+      div.innerHTML = `
+      <h3>${producto.nombre}</h3>
+      <p>${producto.precio}</p>
+      <p>${producto.stock}</p>
+    `
+      document.getElementById('productos').appendChild(div)
+    })
+  }
+
+  getData()
+
+  const submit = async (e) => {
+    e.preventDefault()
+    const nombre = document.getElementById('nombre').value
+    const precio = document.getElementById('precio').value
+    const stock = document.getElementById('stock').value
+    const response = await fetch('http://localhost:3000/productos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre,
+        precio,
+        stock
+      })
+    })
+    const data = await response.json()
+    console.log(data);
+    getData()
+  }
+
+  const form = document.getElementById('formulario')
+  form.addEventListener('submit', submit)
+
+</script>
+
+</html>

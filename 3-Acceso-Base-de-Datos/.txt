@@ -1,0 +1,119 @@
+🟢🟡🔴
+
+Acceso a Base de Datos con Express y PG 
+
+
+Aprenderemos a crear un servidor al estilo Rest con
+ExpressJS que lea y guarde los datos de un pedido en una
+base de datos SQL.
+
+🟢 OBJETIVOS
+  Insertar datos en una tabla alojada en PostgreSQL usando el
+  paquete pg.
+  Mostrar por consola datos alojados en PostgreSQL usando el
+  paquete pg.
+  Crear una ruta GET con Express para devolver los registros de una
+  tabla alojada en PostgreSQL.
+  Crear una ruta POST con Express que reciba y almacene en
+  PostgreSQL un nuevo registro.
+
+🟢 Express y bases de datos
+  Con Node y Express podemos crear aplicaciones que pidan o guarden datos en distintos motores de bases de datos.
+  En esta unidad aprenderemos a hacerlo con postgreSQL.
+
+🟢 El paquete pg https://node-postgres.com/
+  El paquete pg nos permite conectarnos e interactuar con una base de datos
+  PostgreSQL y está disponible en NPM.
+
+  🟡 Instalación del paquete pg
+  
+  🟡 Primera consulta SQL con Node
+    Para empezar a hacer consultas SQL desde Node, crearemos una base de datos que tenga como
+    objetivo almacenar los PRODUCTOS.
+    Abre la terminal psql y escribe las siguientes instrucciones para crear una base de datos TIENDA
+    y una tabla PRODUCTOS:
+
+    CREATE DATABASE tienda;
+    \c tienda;
+    CREATE TABLE productos(id: serial, nombre: varchar, precio: int, stoc: int not null)
+  
+  🟡 Acceso a base datos con Node
+      Crear un archivo consultas.js 
+      const { Pool } = require('pg')
+      
+      const pool = new Pool({
+      host: 'localhost',
+      user: 'postgres',
+      password: 'postgres',
+      database: '',
+      allowExitOnIdle: true
+      })
+
+      const getDate = async () => {
+      const result = await pool.query("SELECT NOW()")
+      console.log(result)
+      }
+      getDate()
+
+      La clase Pool nos permite soportar
+      multiconexiones y un mejor
+      rendimiento en las consultas.
+
+      Esta propiedad le indicará a
+      PostgreSQL que cierre la
+      conexión luego de cada consulta
+
+      Cada consulta devuelve un objeto
+      result con el detalle obtenido en
+      su ejecución.
+  
+  🟡 El objeto result
+
+    El objeto result contiene entre varias propiedades:
+    ● command: El comando SQL que se utilizó en la
+    consulta.
+    ● rowCount: Cantidad de filas que fueron procesadas
+    en la consulta.
+    ● rows: Un arreglo de objetos con todos los
+    resultados o filas obtenido en la consulta.
+    ● fields: La estructura de cada uno de los campos o
+    columnas en las filas obtenidas.
+
+   🟡 Primer registro en PostgreSQL desde Node
+
+    const agregarProducto = async (nombre, precio, stock) => {
+    const consulta = "INSERT INTO productos values (DEFAULT, $1, $2)"
+    const values = [nombre, precio, stock]
+    const result = await pool.query(consulta, values)
+    console.log("Producto agregado")
+    }
+
+    En esta ocasión estamos usando el método query()
+    para hacer una consulta parametrizada que nos ayuda
+    a evitar un problema llamado SQL Injection, el cual se
+    discute en la guía de esta unidad.
+
+    🔴 ¿Qué es un SQL Injection?
+      La inyección de SQL es una técnica que consiste en inyectar código SQL a partir de un input,
+      este puede ser un formulario de una página web o un valor que enviemos a una API REST
+      desde un cliente. El código inyectado se ejecuta en el servidor y puede modificar accesos de
+      usuarios, insertar registros o incluso borrar tablas.
+
+🟢 Obteniendo registros de PostgreSQL desde Node
+
+    🟡 Para obtener los registros almacenados en PostgreSQL crea una nueva función en el archivo consultas.js que muestre
+    por consola y retorne las filas de la tabla viajes:
+    Ejecutando esta función veremos por consola el viaje a Valdivia registrado anteriormente.
+    const obtenerProductos = async () => {
+    const { rows } = await pool.query("SELECT * FROM productos")
+    console.log(rows)
+    return rows
+    }
+    obtenerProductos()
+
+🟢 API REST con PostgreSQL(GET)
+  Ahora que podemos interactuar con una base de datos PostgreSQL para obtener y hacer registros, unamos los
+  conocimientos previos para crear una API REST con Express que ofrezca una ruta GET /productos que devuelva todos los
+  productos registrados en la tabla.
+
+🟢 API REST con PostgreSQL(POST)
